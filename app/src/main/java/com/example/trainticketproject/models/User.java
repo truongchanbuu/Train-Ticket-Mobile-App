@@ -8,6 +8,8 @@ public class User {
     @PrimaryKey(autoGenerate = true)
     private int uid;
     private String name;
+    private int age;
+    private Gender gender;
     private String email;
     private String password;
     private String phone;
@@ -50,5 +52,21 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

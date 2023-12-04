@@ -17,6 +17,13 @@ public class Ticket {
     private LocalDateTime issuedDate;
     private Status status;
 
+    public Ticket(int uid, int trainId, String seatNumber, LocalDateTime issuedDate, Status status) {
+        this.uid = uid;
+        this.trainId = trainId;
+        this.seatNumber = seatNumber;
+        this.issuedDate = issuedDate;
+        this.status = status;
+    }
 
     public int getTicketId() {
         return ticketId;
