@@ -13,11 +13,11 @@ public class Ticket {
     private int ticketId;
     private int uid;
     private int trainId;
-    private String seatNumber;
+    private int seatNumber;
     private LocalDateTime issuedDate;
     private Status status;
 
-    public Ticket(int uid, int trainId, String seatNumber, LocalDateTime issuedDate, Status status) {
+    public Ticket(int uid, int trainId, int seatNumber, LocalDateTime issuedDate, Status status) {
         this.uid = uid;
         this.trainId = trainId;
         this.seatNumber = seatNumber;
@@ -33,11 +33,11 @@ public class Ticket {
         this.ticketId = ticketId;
     }
 
-    public String getSeatNumber() {
+    public int getSeatNumber() {
         return seatNumber;
     }
 
-    public void setSeatNumber(String seatNumber) {
+    public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber;
     }
 
