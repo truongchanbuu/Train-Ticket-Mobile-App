@@ -3,10 +3,12 @@ package com.example.trainticketproject.uis;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,12 +40,14 @@ public class TrainDetailInfoActivity extends AppCompatActivity {
     private TrainViewModel viewModel;
 
     TextView tvTrip, tvDepartureStation, tvArrivalStation, tvDepartureTime, tvArrivalTime, tvTotalTime, tvPrice, tvDepartureDate, tvSeat;
+    ImageButton imgBtnShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train_detail_info);
 
+        imgBtnShare = findViewById(R.id.imgBtnShare);
         tvTrip = findViewById(R.id.tvTrip);
         tvDepartureStation = findViewById(R.id.tvDepartureStation);
         tvArrivalStation = findViewById(R.id.tvArrivalStation);
@@ -124,6 +128,23 @@ public class TrainDetailInfoActivity extends AppCompatActivity {
 
             tvTotalTime.setText(hours + " hours and " + remainingMinutes + " mins");
         }
+
+        imgBtnShare.setOnClickListener(v -> {
+            Intent sendIntent = new Intent(Intent.ACTION_SEND);
+            String shareText = "Thông tin chuyến tàu:\n" +
+                    "Trip: " + tvTrip.getText().toString()+ "\n" +
+                    "Departure Station: " + tvDepartureStation.getText().toString() + "\n" +
+                    "Arrival Station: " + tvArrivalStation.getText().toString() + "\n" +
+                    "Departure Date: " + tvDepartureDate.getText().toString() + "\n" +
+                    "Departure Time: " + tvDepartureTime.getText().toString() + "\n" +
+                    "Price: " + tvPrice.getText().toString();
+
+            sendIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+            sendIntent.setType("text/plain");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, "Train Detail Information");
+            startActivity(shareIntent);
+        });
     }
 
     private List<Train> createSampleTrains() {

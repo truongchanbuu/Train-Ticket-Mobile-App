@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".uis.TrainDetailInfoActivity">
 
+    <ImageButton
+        android:id="@+id/imgBtnShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:contentDescription="@string/share"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/baseline_share_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tvIntro"
         android:layout_width="wrap_content"
