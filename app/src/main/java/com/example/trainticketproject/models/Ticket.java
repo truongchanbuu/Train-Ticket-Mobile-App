@@ -1,9 +1,11 @@
 package com.example.trainticketproject.models;
 
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
-import androidx.room.Relation;
+
+import com.example.trainticketproject.utils.LocalDateTimeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.time.LocalDateTime;
 
@@ -71,5 +73,28 @@ public class Ticket {
 
     public void setTrainId(int trainId) {
         this.trainId = trainId;
+    }
+
+    public String toJson() {
+        Gson gson = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                    .setPrettyPrinting()
+                    .create();
+        }
+        return gson.toJson(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "ticketId=" + ticketId +
+                ", uid=" + uid +
+                ", trainId=" + trainId +
+                ", seatNumber=" + seatNumber +
+                ", issuedDate=" + issuedDate +
+                ", status=" + status +
+                "}";
     }
 }

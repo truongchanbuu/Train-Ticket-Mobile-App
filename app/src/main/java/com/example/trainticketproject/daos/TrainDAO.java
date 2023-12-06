@@ -1,5 +1,6 @@
 package com.example.trainticketproject.daos;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -22,10 +23,10 @@ public interface TrainDAO {
     void deleteTrain(Train train);
 
     @Query("SELECT * FROM Train WHERE trainId = :id")
-    Train getTrainById(int id);
+    LiveData<Train> getTrainById(int id);
 
     @Query("SELECT * FROM Train")
-    List<Train> getAllTrains();
+    LiveData<List<Train>> getAllTrains();
 
     @Insert
     void insertMultipleTrains(List<Train> trains);

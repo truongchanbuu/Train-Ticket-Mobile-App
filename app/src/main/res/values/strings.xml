@@ -7,6 +7,10 @@
     <string name="to">to:</string>
     <string name="departure_date">Departure Date:</string>
     <string name="price">Price:</string>
-    <string name="seat">Available seats:</string>
+    <string name="available_seat">Available seats:</string>
     <string name="trip">Trip:</string>
+    <string name="ticket_id">Ticket ID:</string>
+    <string name="time">Time:</string>
+    <string name="customer">Customer:</string>
+    <string name="seat_number">Seat Number:</string>
 </resources>

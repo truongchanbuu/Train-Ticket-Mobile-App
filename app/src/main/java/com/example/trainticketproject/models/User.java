@@ -14,6 +14,15 @@ public class User {
     private String password;
     private String phone;
 
+    public User(String name, int age, Gender gender, String email, String password, String phone) {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+    }
+
     public int getUid() {
         return uid;
     }
@@ -68,5 +77,10 @@ public class User {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + "\nAge: " + age + "\nGender: " + gender + "\nEmail: " + email + "\nPhone: " + phone;
     }
 }

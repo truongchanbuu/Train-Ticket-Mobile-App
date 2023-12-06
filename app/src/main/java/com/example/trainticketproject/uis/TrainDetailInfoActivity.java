@@ -1,12 +1,14 @@
 package com.example.trainticketproject.uis;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.trainticketproject.R;
 import com.example.trainticketproject.daos.TicketDAO;
@@ -18,19 +20,22 @@ import com.example.trainticketproject.models.Status;
 import com.example.trainticketproject.models.Ticket;
 import com.example.trainticketproject.models.Train;
 import com.example.trainticketproject.utils.DateTimeConverter;
+import com.example.trainticketproject.utils.ScheduleNotification;
+import com.example.trainticketproject.viewmodels.TrainViewModel;
 
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class TrainDetailInfoActivity extends AppCompatActivity {
-    private TrainDAO trainDAO;
-    private TicketDAO ticketDAO;
+    private TrainViewModel viewModel;
 
     TextView tvTrip, tvDepartureStation, tvArrivalStation, tvDepartureTime, tvArrivalTime, tvTotalTime, tvPrice, tvDepartureDate, tvSeat;
 
@@ -49,40 +54,41 @@ public class TrainDetailInfoActivity extends AppCompatActivity {
         tvDepartureDate = findViewById(R.id.tvDepartureDate);
         tvSeat = findViewById(R.id.tvSeat);
 
-        TrainRoomDatabase trainDatabase = TrainRoomDatabase.getDatabase(this);
-        trainDAO = trainDatabase.trainDAO();
+//        TrainRoomDatabase trainDatabase = TrainRoomDatabase.getDatabase(this);
+//        trainDAO = trainDatabase.trainDAO();
+//
+//        TicketRoomDatabase ticketRoomDatabase = TicketRoomDatabase.getDatabase(this);
+//        ticketDAO = ticketRoomDatabase.ticketDAO();
 
-        TicketRoomDatabase ticketRoomDatabase = TicketRoomDatabase.getDatabase(this);
-        ticketDAO = ticketRoomDatabase.ticketDAO();
+        viewModel = new ViewModelProvider(this).get(TrainViewModel.class);
 
         // Add sample data
 //        new Thread(() -> {
 //            List<Train> sampleTrains = createSampleTrains();
 //            trainDAO.insertMultipleTrains(sampleTrains);
 //        }).start();
-
-//        new Thread(() -> {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                ticketDAO.insertTicket(new Ticket(1, 1, "A1", LocalDateTime.now(), Status.AVAILABLE));
-//                ticketDAO.insertTicket(new Ticket(2, 1, "A2", LocalDateTime.now(), Status.AVAILABLE));
-//                ticketDAO.insertTicket(new Ticket(3, 1, "B1", LocalDateTime.now(), Status.AVAILABLE));
 //
-//                ticketDAO.insertTicket(new Ticket(4, 2, "C1", LocalDateTime.now(), Status.AVAILABLE));
-//                ticketDAO.insertTicket(new Ticket(5, 2, "C2", LocalDateTime.now(), Status.AVAILABLE));
-//                ticketDAO.insertTicket(new Ticket(6, 2, "D1", LocalDateTime.now(), Status.AVAILABLE));
-//            }
+//        new Thread(() -> {
+//            List<Ticket> sampleTickets = new ArrayList<>();
+//            ticketDAO.insertMultipleTickets(sampleTickets);
 //        }).start();
 
         // Get id from intent
         int id = 1;
-        new Thread(() -> {
-            Train selectedTrain = trainDAO.getTrainById(id);
-            Log.d("train", selectedTrain.toString());
-
-            runOnUiThread(() -> {
+        viewModel.getTrainById(id).observe(this, selectedTrain -> {
+            if (selectedTrain != null) {
                 updateUI(selectedTrain);
-            });
-        }).start();
+                viewModel.getAvailableSeatsCount(id).observe(this, availableSeats -> {
+                    int totalSeats = selectedTrain.getTotalSeats();
+                    availableSeats = totalSeats - availableSeats;
+                    tvSeat.setText(String.valueOf(availableSeats) + "/" + String.valueOf(totalSeats));
+                });
+
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                    createNotificationDelayed(selectedTrain.getDepartureTime(), Duration.ofMinutes(1));
+//                }
+            }
+        });
     }
 
     private void updateUI(Train selectedTrain) {
@@ -118,17 +124,6 @@ public class TrainDetailInfoActivity extends AppCompatActivity {
 
             tvTotalTime.setText(hours + " hours and " + remainingMinutes + " mins");
         }
-
-        int totalSeats = selectedTrain.getTotalSeats();
-
-        new Thread(() -> {
-            int availableTickets = ticketDAO.getAvailableTicketCountByTrainId(selectedTrain.getTrainId());
-            int availableSeats = totalSeats - availableTickets;
-
-            runOnUiThread(() -> {
-                tvSeat.setText(String.valueOf(availableSeats) + "/" + String.valueOf(totalSeats));
-            });
-        }).start();
     }
 
     private List<Train> createSampleTrains() {
@@ -143,4 +138,29 @@ public class TrainDetailInfoActivity extends AppCompatActivity {
 
         return trains;
     }
+
+    private List<Ticket> createSampleTickets() {
+        List<Ticket> tickets = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            tickets.add(new Ticket(1, 1, 1, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(2, 1, 2, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(3, 1, 3, LocalDateTime.now(), Status.AVAILABLE));
+
+            tickets.add(new Ticket(4, 2, 4, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(5, 2, 5, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(6, 2, 6, LocalDateTime.now(), Status.AVAILABLE));
+        }
+
+        return tickets;
+    }
+
+//    private void createNotificationDelayed(LocalDateTime departureDate, Duration delay) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            LocalDateTime notificationTime = departureDate.minus(delay);
+//
+//            long notificationTimeMillis = notificationTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+//
+//            ScheduleNotification.scheduleNotification(getApplicationContext(), "Lịch trình của bạn", "Sắp tới ngày đi rồi!", notificationTimeMillis);
+//        }
+//    }
 }
