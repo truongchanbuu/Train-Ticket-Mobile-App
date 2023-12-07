@@ -12,14 +12,14 @@ import java.time.LocalDateTime;
 @Entity
 public class Ticket {
     @PrimaryKey(autoGenerate = true)
-    private int ticketId;
-    private int uid;
+    private Integer ticketId;
+    private Integer uid;
     private int trainId;
     private int seatNumber;
     private LocalDateTime issuedDate;
     private Status status;
 
-    public Ticket(int uid, int trainId, int seatNumber, LocalDateTime issuedDate, Status status) {
+    public Ticket(Integer uid, int trainId, int seatNumber, LocalDateTime issuedDate, Status status) {
         this.uid = uid;
         this.trainId = trainId;
         this.seatNumber = seatNumber;
@@ -59,11 +59,11 @@ public class Ticket {
         this.status = status;
     }
 
-    public int getUid() {
+    public Integer getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(Integer uid) {
         this.uid = uid;
     }
 

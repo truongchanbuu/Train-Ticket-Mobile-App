@@ -4,37 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.trainticketproject.R;
-import com.example.trainticketproject.daos.TicketDAO;
-import com.example.trainticketproject.daos.TrainDAO;
-import com.example.trainticketproject.databases.TicketRoomDatabase;
-import com.example.trainticketproject.databases.TrainRoomDatabase;
-import com.example.trainticketproject.databases.UserRoomDatabase;
 import com.example.trainticketproject.models.Status;
 import com.example.trainticketproject.models.Ticket;
 import com.example.trainticketproject.models.Train;
 import com.example.trainticketproject.utils.DateTimeConverter;
-import com.example.trainticketproject.utils.ScheduleNotification;
 import com.example.trainticketproject.viewmodels.TrainViewModel;
 
 import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 public class TrainDetailInfoActivity extends AppCompatActivity {
     private TrainViewModel viewModel;
@@ -58,24 +46,7 @@ public class TrainDetailInfoActivity extends AppCompatActivity {
         tvDepartureDate = findViewById(R.id.tvDepartureDate);
         tvSeat = findViewById(R.id.tvSeat);
 
-//        TrainRoomDatabase trainDatabase = TrainRoomDatabase.getDatabase(this);
-//        trainDAO = trainDatabase.trainDAO();
-//
-//        TicketRoomDatabase ticketRoomDatabase = TicketRoomDatabase.getDatabase(this);
-//        ticketDAO = ticketRoomDatabase.ticketDAO();
-
         viewModel = new ViewModelProvider(this).get(TrainViewModel.class);
-
-        // Add sample data
-//        new Thread(() -> {
-//            List<Train> sampleTrains = createSampleTrains();
-//            trainDAO.insertMultipleTrains(sampleTrains);
-//        }).start();
-//
-//        new Thread(() -> {
-//            List<Ticket> sampleTickets = new ArrayList<>();
-//            ticketDAO.insertMultipleTickets(sampleTickets);
-//        }).start();
 
         // Get id from intent
         int id = 1;
@@ -164,12 +135,12 @@ public class TrainDetailInfoActivity extends AppCompatActivity {
         List<Ticket> tickets = new ArrayList<>();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             tickets.add(new Ticket(1, 1, 1, LocalDateTime.now(), Status.AVAILABLE));
-            tickets.add(new Ticket(2, 1, 2, LocalDateTime.now(), Status.AVAILABLE));
-            tickets.add(new Ticket(3, 1, 3, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(1, 1, 2, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(2, 1, 3, LocalDateTime.now(), Status.AVAILABLE));
 
-            tickets.add(new Ticket(4, 2, 4, LocalDateTime.now(), Status.AVAILABLE));
-            tickets.add(new Ticket(5, 2, 5, LocalDateTime.now(), Status.AVAILABLE));
-            tickets.add(new Ticket(6, 2, 6, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(3, 2, 4, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(3, 2, 5, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(3, 2, 6, LocalDateTime.now(), Status.AVAILABLE));
         }
 
         return tickets;

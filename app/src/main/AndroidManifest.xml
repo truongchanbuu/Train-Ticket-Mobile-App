@@ -19,17 +19,20 @@
         android:theme="@style/Theme.TrainTicketProject"
         tools:targetApi="31">
         <activity
-            android:name=".uis.DetailTicketActivity"
-            android:exported="false" />
-        <activity
-            android:name=".uis.TrainDetailInfoActivity"
-            android:exported="true" >
+            android:name=".uis.VoucherActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".uis.DetailTicketActivity"
+            android:exported="false" />
+        <activity
+            android:name=".uis.TrainDetailInfoActivity"
+            android:exported="false" />
         <activity
             android:name=".uis.MainActivity"
             android:exported="false" />

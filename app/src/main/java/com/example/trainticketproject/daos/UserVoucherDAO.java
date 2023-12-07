@@ -3,29 +3,25 @@ package com.example.trainticketproject.daos;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.example.trainticketproject.models.User;
+import com.example.trainticketproject.models.UserVoucherCrossRef;
 import com.example.trainticketproject.models.UserWithVouchers;
+import com.example.trainticketproject.models.Voucher;
 import com.example.trainticketproject.models.VoucherWithUsers;
 
 import java.util.List;
 
 @Dao
-public interface UserDAO {
-    @Insert
-    void insert(User user);
-
+public interface UserVoucherDAO {
+    @Transaction
     @Query("SELECT * FROM User WHERE uid = :uid")
-    LiveData<User> getUserById(Integer uid);
+    LiveData<UserWithVouchers> getUserWithVouchers(Integer uid);
 
+    @Transaction
     @Insert
-    void insertMultipleUser(List<User> users);
-
-    @Query("UPDATE User SET rewardPoint = :newRewardPoint WHERE uid = :uid")
-    void updateRewardPoint(int newRewardPoint, Integer uid);
-
-    @Query("SELECT * FROM User")
-    LiveData<List<User>> getAllUsers();
+    void insertUserWithVoucher(Voucher voucher);
 }

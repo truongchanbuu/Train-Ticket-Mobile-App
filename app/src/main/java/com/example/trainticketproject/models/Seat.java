@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Seat {
     @PrimaryKey(autoGenerate = true)
-    private int seatCode;
+    private Integer seatCode;
     private Status status;
     private int trainId;
 

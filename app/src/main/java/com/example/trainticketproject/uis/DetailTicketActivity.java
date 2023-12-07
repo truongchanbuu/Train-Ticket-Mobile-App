@@ -50,13 +50,6 @@ public class DetailTicketActivity extends AppCompatActivity {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         trainViewModel = new ViewModelProvider(this).get(TrainViewModel.class);
 
-        //Add sample data
-//        new Thread(() -> {
-//            List<User> users = createSampleUser();
-//
-//            userViewModel.insertMultipleUser(users);
-//        }).start();
-
         int ticketId = 1;
         ticketViewModel.getTicketById(ticketId).observe(this, selectedTicket -> {
             if (selectedTicket != null) {
@@ -97,10 +90,13 @@ public class DetailTicketActivity extends AppCompatActivity {
         QRCodeGenerator.generateQRCodeAsync(this, selectedTicket, imgETicket);
     }
 
-    private List<User> createSampleUser() {
+    public static List<User> createSampleUser() {
         List<User> users = new ArrayList<>();
         users.add(new User("John Doe", 25, Gender.MALE, "john@example.com", "password123", "123456789"));
         users.add(new User("Jane Doe", 28, Gender.FEMALE, "jane@example.com", "password456", "987654321"));
+        User dany = new User("Danny", 22, Gender.FEMALE, "dany@example.com", "password456", "987654321");
+        dany.setRewardPoint(10000);
+        users.add(dany);
 
         return users;
     }
