@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Train {
     @PrimaryKey(autoGenerate = true)
-    private int trainId;
+    private Long trainId;
     private String trip;
     private String departureStation;
     private String arrivalStation;
@@ -27,11 +27,11 @@ public class Train {
         this.totalSeats = totalSeats;
     }
 
-    public int getTrainId() {
+    public Long getTrainId() {
         return trainId;
     }
 
-    public void setTrainId(int trainId) {
+    public void setTrainId(Long trainId) {
         this.trainId = trainId;
     }
 

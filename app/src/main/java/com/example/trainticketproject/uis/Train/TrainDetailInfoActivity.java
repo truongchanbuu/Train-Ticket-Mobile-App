@@ -1,7 +1,9 @@
-package com.example.trainticketproject.uis;
+package com.example.trainticketproject.uis.Train;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Build;
@@ -10,11 +12,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.trainticketproject.R;
+import com.example.trainticketproject.models.Seat;
 import com.example.trainticketproject.models.Status;
 import com.example.trainticketproject.models.Ticket;
 import com.example.trainticketproject.models.Train;
+import com.example.trainticketproject.uis.Seat.SeatAdapter;
 import com.example.trainticketproject.utils.DateTimeConverter;
+import com.example.trainticketproject.viewmodels.SeatViewModel;
+import com.example.trainticketproject.viewmodels.TicketViewModel;
 import com.example.trainticketproject.viewmodels.TrainViewModel;
+import com.example.trainticketproject.viewmodels.UserViewModel;
 
 import java.text.NumberFormat;
 import java.time.Duration;
@@ -25,10 +32,18 @@ import java.util.List;
 import java.util.Locale;
 
 public class TrainDetailInfoActivity extends AppCompatActivity {
-    private TrainViewModel viewModel;
-
+    Long uid;
+    Long trainId;
+    private SeatViewModel seatViewModel;
+    private TicketViewModel ticketViewModel;
+    private UserViewModel userViewModel;
+    private TrainViewModel trainViewModel;
     TextView tvTrip, tvDepartureStation, tvArrivalStation, tvDepartureTime, tvArrivalTime, tvTotalTime, tvPrice, tvDepartureDate, tvSeat;
     ImageButton imgBtnShare;
+
+    RecyclerView recyclerView;
+    private SeatAdapter seatAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +61,38 @@ public class TrainDetailInfoActivity extends AppCompatActivity {
         tvDepartureDate = findViewById(R.id.tvDepartureDate);
         tvSeat = findViewById(R.id.tvSeat);
 
-        viewModel = new ViewModelProvider(this).get(TrainViewModel.class);
+        recyclerView = findViewById(R.id.recyclerVIewMap);
 
-        // Get id from intent
-        int id = 1;
-        viewModel.getTrainById(id).observe(this, selectedTrain -> {
+        trainViewModel = new ViewModelProvider(this).get(TrainViewModel.class);
+        seatViewModel = new ViewModelProvider(this).get(SeatViewModel.class);
+        ticketViewModel = new ViewModelProvider(this).get(TicketViewModel.class);
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
+        Intent detailIntent = getIntent();
+        uid = detailIntent.getLongExtra("uid", 1);
+        trainId = detailIntent.getLongExtra("trainId", 1);
+
+        // Khhi tạo train thì các seats nên được tạo cùng lúc đó
+        new Thread(() -> {
+            List<Seat> seats = createSeatsForTrain(trainId);
+            seatViewModel.insertAllSeats(seats);
+        }).start();
+
+        int spanCount = 4;
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        seatViewModel.getAllSeatsOfTrain(trainId).observe(this, seats -> {
+            if (seats != null) {
+                seatAdapter = new SeatAdapter(uid, seats, seatViewModel, ticketViewModel, trainViewModel, userViewModel);
+                recyclerView.setAdapter(seatAdapter);
+            }
+        });
+
+        trainViewModel.getTrainById(trainId).observe(this, selectedTrain -> {
             if (selectedTrain != null) {
                 updateUI(selectedTrain);
-                viewModel.getAvailableSeatsCount(id).observe(this, availableSeats -> {
+                trainViewModel.getAvailableSeatsCount(trainId).observe(this, availableSeats -> {
                     int totalSeats = selectedTrain.getTotalSeats();
                     availableSeats = totalSeats - availableSeats;
                     tvSeat.setText(String.valueOf(availableSeats) + "/" + String.valueOf(totalSeats));
@@ -118,11 +157,11 @@ public class TrainDetailInfoActivity extends AppCompatActivity {
         });
     }
 
-    private List<Train> createSampleTrains() {
+    public static List<Train> createSampleTrains() {
         List<Train> trains = new ArrayList<>();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            trains.add(new Train("HO CHI MINH - HA NOI", "HO CHI MINH GAS STATION", "HA NOI GAS STATION", LocalDateTime.now(), LocalDateTime.now().plusHours(2),200000, 50));
+            trains.add(new Train("HO CHI MINH - HA NOI", "HO CHI MINH GAS STATION", "HA NOI GAS STATION", LocalDateTime.now(), LocalDateTime.now().plusHours(2),200000, 40));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             trains.add(new Train("HA NOI - HO CHI MINH", "HA NOI GAS STATION",  "HO CHI MINH GAS STATION", LocalDateTime.now().plusHours(3), LocalDateTime.now().plusHours(5), 200000, 40));
@@ -131,16 +170,26 @@ public class TrainDetailInfoActivity extends AppCompatActivity {
         return trains;
     }
 
-    private List<Ticket> createSampleTickets() {
+    public static List<Seat> createSeatsForTrain(Long trainId) {
+        List<Seat> seats = new ArrayList<>();
+
+        for (int i = 1; i <= 40; ++i) {
+            seats.add(new Seat(i, Status.AVAILABLE, trainId, null, null));
+        }
+
+        return seats;
+    }
+
+    public static List<Ticket> createSampleTickets() {
         List<Ticket> tickets = new ArrayList<>();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            tickets.add(new Ticket(1, 1, 1, LocalDateTime.now(), Status.AVAILABLE));
-            tickets.add(new Ticket(1, 1, 2, LocalDateTime.now(), Status.AVAILABLE));
-            tickets.add(new Ticket(2, 1, 3, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(1L, 1L, 1L, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(1L, 1L, 2L, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(2L, 1L, 3L, LocalDateTime.now(), Status.AVAILABLE));
 
-            tickets.add(new Ticket(3, 2, 4, LocalDateTime.now(), Status.AVAILABLE));
-            tickets.add(new Ticket(3, 2, 5, LocalDateTime.now(), Status.AVAILABLE));
-            tickets.add(new Ticket(3, 2, 6, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(3L, 2L, 4L, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(3L, 2L, 5L, LocalDateTime.now(), Status.AVAILABLE));
+            tickets.add(new Ticket(3L, 2L, 6L, LocalDateTime.now(), Status.AVAILABLE));
         }
 
         return tickets;

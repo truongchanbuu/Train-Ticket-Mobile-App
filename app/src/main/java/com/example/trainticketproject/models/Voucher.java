@@ -10,7 +10,7 @@ import java.util.UUID;
 public class Voucher {
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    private Integer voucherId;
+    private Long voucherId;
     private String voucherName;
     private String description;
     private int point;
@@ -23,11 +23,11 @@ public class Voucher {
     public Voucher() {
     }
 
-    public Integer getVoucherId() {
+    public Long getVoucherId() {
         return voucherId;
     }
 
-    public void setVoucherId(Integer voucherId) {
+    public void setVoucherId(Long voucherId) {
         this.voucherId = voucherId;
     }
 

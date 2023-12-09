@@ -23,17 +23,17 @@ import androidx.room.PrimaryKey;
         )
 public class UserVoucherCrossRef {
     @PrimaryKey(autoGenerate = true)
-    private Integer id;
+    private Long id;
     @NonNull
-    public Integer uid;
+    public Long uid;
     @NonNull
-    public Integer voucherId;
+    public Long voucherId;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

@@ -30,5 +30,5 @@ public interface UserVoucherCrossRefDAO {
     @Query("SELECT * FROM Voucher " +
             "INNER JOIN user_voucher ON Voucher.voucherId = user_voucher.voucherId " +
             "WHERE user_voucher.uid = :uid")
-    LiveData<List<Voucher>> getVouchersForUser(Integer uid);
+    LiveData<List<Voucher>> getVouchersForUser(Long uid);
 }

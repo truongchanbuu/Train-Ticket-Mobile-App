@@ -19,7 +19,7 @@ import java.util.List;
 public interface UserVoucherDAO {
     @Transaction
     @Query("SELECT * FROM User WHERE uid = :uid")
-    LiveData<UserWithVouchers> getUserWithVouchers(Integer uid);
+    LiveData<UserWithVouchers> getUserWithVouchers(Long uid);
 
     @Transaction
     @Insert

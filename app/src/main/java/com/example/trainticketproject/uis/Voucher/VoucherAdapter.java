@@ -1,4 +1,4 @@
-package com.example.trainticketproject.uis;
+package com.example.trainticketproject.uis.Voucher;
 
 import android.app.AlertDialog;
 import android.util.Log;
@@ -16,7 +16,6 @@ import com.example.trainticketproject.models.UserVoucherCrossRef;
 import com.example.trainticketproject.models.Voucher;
 import com.example.trainticketproject.viewmodels.UserViewModel;
 import com.example.trainticketproject.viewmodels.UserVoucherViewModel;
-import com.example.trainticketproject.viewmodels.VoucherViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

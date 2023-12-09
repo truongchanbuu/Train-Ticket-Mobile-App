@@ -23,7 +23,7 @@ public class UserRepository {
         userDAO.insert(user);
     }
 
-    public LiveData<User> getUserById(Integer uid) {
+    public LiveData<User> getUserById(Long uid) {
         return userDAO.getUserById(uid);
     }
 
@@ -31,7 +31,7 @@ public class UserRepository {
         userDAO.insertMultipleUser(users);
     }
 
-    public void updateRewardPoint(int newRewardPoint, Integer uid) {
+    public void updateRewardPoint(int newRewardPoint, Long uid) {
         userDAO.updateRewardPoint(newRewardPoint, uid);
     }
 

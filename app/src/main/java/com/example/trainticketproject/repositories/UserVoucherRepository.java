@@ -21,7 +21,7 @@ public class UserVoucherRepository {
         userVoucherDAO = userVoucherRoomDatabase.userVoucherDAO();
     }
 
-    public LiveData<UserWithVouchers> getUserWithVouchers(Integer uid) {
+    public LiveData<UserWithVouchers> getUserWithVouchers(Long uid) {
         return userVoucherDAO.getUserWithVouchers(uid);
     }
 }

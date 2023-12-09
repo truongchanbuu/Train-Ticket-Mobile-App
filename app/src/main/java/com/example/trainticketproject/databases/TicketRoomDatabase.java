@@ -8,11 +8,13 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.trainticketproject.daos.TicketDAO;
+import com.example.trainticketproject.models.Seat;
 import com.example.trainticketproject.models.Ticket;
-import com.example.trainticketproject.uis.TrainDetailInfoActivity;
+import com.example.trainticketproject.models.Train;
+import com.example.trainticketproject.models.User;
 import com.example.trainticketproject.utils.DateTimeConverter;
 
-@Database(entities = { Ticket.class }, version = 1)
+@Database(entities = { Ticket.class, User.class, Seat.class, Train.class }, version = 1)
 @TypeConverters({ DateTimeConverter.class })
 public abstract class TicketRoomDatabase extends RoomDatabase {
     public abstract TicketDAO ticketDAO();

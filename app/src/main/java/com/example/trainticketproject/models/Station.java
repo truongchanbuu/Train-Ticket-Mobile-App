@@ -6,14 +6,14 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Station {
     @PrimaryKey(autoGenerate = true)
-    private int stationId;
+    private Long stationId;
     private String stationName;
 
-    public int getStationId() {
+    public Long getStationId() {
         return stationId;
     }
 
-    public void setStationId(int stationId) {
+    public void setStationId(Long stationId) {
         this.stationId = stationId;
     }
 

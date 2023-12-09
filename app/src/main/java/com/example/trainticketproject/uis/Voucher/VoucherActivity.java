@@ -1,21 +1,14 @@
-package com.example.trainticketproject.uis;
+package com.example.trainticketproject.uis.Voucher;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.trainticketproject.R;
-import com.example.trainticketproject.models.User;
-import com.example.trainticketproject.models.UserWithVouchers;
 import com.example.trainticketproject.models.Voucher;
 import com.example.trainticketproject.viewmodels.UserViewModel;
 import com.example.trainticketproject.viewmodels.UserVoucherViewModel;
@@ -55,7 +48,7 @@ public class VoucherActivity extends AppCompatActivity {
 //            userViewModel.insertMultipleUser(users);
 //        }).start();
 
-        int uid = 6;
+        Long uid = 6L;
 
         voucherViewModel.getAllVouchers().observe(this, vouchers -> {
             userViewModel.getUserById(uid).observe(this, user -> {

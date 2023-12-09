@@ -8,5 +8,5 @@ import com.example.trainticketproject.models.Station;
 @Dao
 public interface StationDAO {
     @Query("SELECT * FROM Station WHERE stationId = :id")
-    Station getStationById(int id);
+    Station getStationById(Long id);
 }

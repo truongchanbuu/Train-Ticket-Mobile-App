@@ -23,7 +23,7 @@ public interface TrainDAO {
     void deleteTrain(Train train);
 
     @Query("SELECT * FROM Train WHERE trainId = :id")
-    LiveData<Train> getTrainById(int id);
+    LiveData<Train> getTrainById(Long id);
 
     @Query("SELECT * FROM Train")
     LiveData<List<Train>> getAllTrains();

@@ -24,7 +24,7 @@ public class UserVoucherViewModel extends AndroidViewModel {
         userVoucherCrossRefRepository = new UserVoucherCrossRefRepository(application);
     }
 
-    public LiveData<UserWithVouchers> getUserWithVouchers(Integer uid) {
+    public LiveData<UserWithVouchers> getUserWithVouchers(Long uid) {
         return userVoucherRepository.getUserWithVouchers(uid);
     }
 
@@ -32,7 +32,7 @@ public class UserVoucherViewModel extends AndroidViewModel {
         userVoucherCrossRefRepository.insertVoucherForUser(userVoucherCrossRef);
     }
 
-    public LiveData<List<Voucher>> getVouchersForUser(Integer uid) {
+    public LiveData<List<Voucher>> getVouchersForUser(Long uid) {
         return userVoucherCrossRefRepository.getVouchersForUser(uid);
     }
 

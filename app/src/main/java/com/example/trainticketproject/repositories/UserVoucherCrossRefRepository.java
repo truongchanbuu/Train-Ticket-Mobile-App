@@ -23,7 +23,7 @@ public class UserVoucherCrossRefRepository {
         userVoucherCrossRefDAO.insertVoucherForUser(userVoucherCrossRef);
     }
 
-    public LiveData<List<Voucher>> getVouchersForUser(Integer uid) {
+    public LiveData<List<Voucher>> getVouchersForUser(Long uid) {
         return userVoucherCrossRefDAO.getVouchersForUser(uid);
     }
 

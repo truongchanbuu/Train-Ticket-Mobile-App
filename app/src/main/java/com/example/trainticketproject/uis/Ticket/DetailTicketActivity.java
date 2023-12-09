@@ -1,9 +1,9 @@
-package com.example.trainticketproject.uis;
+package com.example.trainticketproject.uis.Ticket;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.gridlayout.widget.GridLayout;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -32,6 +32,7 @@ public class DetailTicketActivity extends AppCompatActivity {
 
     TextView tvTicketId, tvName, tvTrip, tvDepartureDate, tvPrice, tvTime, tvSeatNumber;
     ImageView imgETicket;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +51,7 @@ public class DetailTicketActivity extends AppCompatActivity {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         trainViewModel = new ViewModelProvider(this).get(TrainViewModel.class);
 
-        int ticketId = 1;
+        Long ticketId = 1L;
         ticketViewModel.getTicketById(ticketId).observe(this, selectedTicket -> {
             if (selectedTicket != null) {
                 updateUI(selectedTicket);
@@ -88,16 +89,5 @@ public class DetailTicketActivity extends AppCompatActivity {
         tvSeatNumber.setText(String.valueOf(selectedTicket.getSeatNumber()));
 
         QRCodeGenerator.generateQRCodeAsync(this, selectedTicket, imgETicket);
-    }
-
-    public static List<User> createSampleUser() {
-        List<User> users = new ArrayList<>();
-        users.add(new User("John Doe", 25, Gender.MALE, "john@example.com", "password123", "123456789"));
-        users.add(new User("Jane Doe", 28, Gender.FEMALE, "jane@example.com", "password456", "987654321"));
-        User dany = new User("Danny", 22, Gender.FEMALE, "dany@example.com", "password456", "987654321");
-        dany.setRewardPoint(10000);
-        users.add(dany);
-
-        return users;
     }
 }

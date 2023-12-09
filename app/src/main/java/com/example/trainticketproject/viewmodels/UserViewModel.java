@@ -24,7 +24,7 @@ public class UserViewModel extends AndroidViewModel {
         userRepository.insert(user);
     }
 
-    public LiveData<User> getUserById(Integer uid) {
+    public LiveData<User> getUserById(Long uid) {
         return userRepository.getUserById(uid);
     }
 
@@ -32,7 +32,7 @@ public class UserViewModel extends AndroidViewModel {
         userRepository.insertMultipleUser(users);
     }
 
-    public void updateRewardPoint(int newRewardPoint, Integer uid) {
+    public void updateRewardPoint(int newRewardPoint, Long uid) {
         userRepository.updateRewardPoint(newRewardPoint, uid);
     }
 

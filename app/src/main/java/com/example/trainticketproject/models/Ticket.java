@@ -1,6 +1,8 @@
 package com.example.trainticketproject.models;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.example.trainticketproject.utils.LocalDateTimeAdapter;
@@ -9,17 +11,31 @@ import com.google.gson.GsonBuilder;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(foreignKeys = {
+                @ForeignKey(entity = User.class,
+                        parentColumns = "uid",
+                        childColumns = "uid",
+                        onDelete = ForeignKey.CASCADE),
+                @ForeignKey(entity = Seat.class,
+                        parentColumns = "id",
+                        childColumns = "seatNumber",
+                        onDelete = ForeignKey.CASCADE),
+                @ForeignKey(entity = Train.class,
+                        parentColumns = "trainId",
+                        childColumns = "trainId",
+                        onDelete = ForeignKey.CASCADE)
+        },
+        indices = {@Index("uid"), @Index("seatNumber"), @Index("trainId")})
 public class Ticket {
     @PrimaryKey(autoGenerate = true)
-    private Integer ticketId;
-    private Integer uid;
-    private int trainId;
-    private int seatNumber;
+    private Long ticketId;
+    private Long uid;
+    private Long trainId;
+    private Long seatNumber;
     private LocalDateTime issuedDate;
     private Status status;
 
-    public Ticket(Integer uid, int trainId, int seatNumber, LocalDateTime issuedDate, Status status) {
+    public Ticket(Long uid, Long trainId, Long seatNumber, LocalDateTime issuedDate, Status status) {
         this.uid = uid;
         this.trainId = trainId;
         this.seatNumber = seatNumber;
@@ -27,19 +43,19 @@ public class Ticket {
         this.status = status;
     }
 
-    public int getTicketId() {
+    public Long getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(int ticketId) {
+    public void setTicketId(Long ticketId) {
         this.ticketId = ticketId;
     }
 
-    public int getSeatNumber() {
+    public Long getSeatNumber() {
         return seatNumber;
     }
 
-    public void setSeatNumber(int seatNumber) {
+    public void setSeatNumber(Long seatNumber) {
         this.seatNumber = seatNumber;
     }
 
@@ -59,19 +75,19 @@ public class Ticket {
         this.status = status;
     }
 
-    public Integer getUid() {
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(Integer uid) {
+    public void setUid(Long uid) {
         this.uid = uid;
     }
 
-    public int getTrainId() {
+    public Long getTrainId() {
         return trainId;
     }
 
-    public void setTrainId(int trainId) {
+    public void setTrainId(Long trainId) {
         this.trainId = trainId;
     }
 

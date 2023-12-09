@@ -1,4 +1,4 @@
-package com.example.trainticketproject.uis;
+package com.example.trainticketproject.uis.Voucher;
 
 import android.view.View;
 import android.widget.TextView;

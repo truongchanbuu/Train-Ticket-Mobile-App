@@ -10,7 +10,7 @@ import java.util.UUID;
 public class User {
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    private Integer uid;
+    private Long uid;
     private String name;
     private int age;
     private Gender gender;
@@ -32,11 +32,11 @@ public class User {
     public User() {
     }
 
-    public Integer getUid() {
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(Integer uid) {
+    public void setUid(Long uid) {
         this.uid = uid;
     }
 
