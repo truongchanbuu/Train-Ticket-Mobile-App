@@ -3,20 +3,35 @@ package com.example.trainticketproject.models;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Train {
     @PrimaryKey(autoGenerate = true)
-    private int trainId;
+    private Long trainId;
+    private String trip;
     private String departureStation;
     private String arrivalStation;
-    private String departureTime;
-    private String arrivalTime;
+    private LocalDateTime departureTime;
+    private LocalDateTime arrivalTime;
+    private int price;
+    private int totalSeats;
 
-    public int getTrainId() {
+    public Train(String trip, String departureStation, String arrivalStation, LocalDateTime departureTime, LocalDateTime arrivalTime, int price, int totalSeats) {
+        this.trip = trip;
+        this.departureStation = departureStation;
+        this.arrivalStation = arrivalStation;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.price = price;
+        this.totalSeats = totalSeats;
+    }
+
+    public Long getTrainId() {
         return trainId;
     }
 
-    public void setTrainId(int trainId) {
+    public void setTrainId(Long trainId) {
         this.trainId = trainId;
     }
 
@@ -36,19 +51,57 @@ public class Train {
         this.arrivalStation = arrivalStation;
     }
 
-    public String getDepartureTime() {
+    public LocalDateTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(String departureTime) {
+    public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
 
-    public String getArrivalTime() {
+    public LocalDateTime getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(String arrivalTime) {
+    public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getTotalSeats() {
+        return totalSeats;
+    }
+
+    public void setTotalSeats(int totalSeats) {
+        this.totalSeats = totalSeats;
+    }
+
+    public String getTrip() {
+        return trip;
+    }
+
+    public void setTrip(String trip) {
+        this.trip = trip;
+    }
+
+    @Override
+    public String toString() {
+        return "Train{" +
+                "trainId=" + trainId +
+                ", trip='" + trip + '\'' +
+                ", departureStation='" + departureStation + '\'' +
+                ", arrivalStation='" + arrivalStation + '\'' +
+                ", departureTime=" + departureTime +
+                ", arrivalTime=" + arrivalTime +
+                ", price=" + price +
+                ", totalSeats=" + totalSeats +
+                '}';
     }
 }

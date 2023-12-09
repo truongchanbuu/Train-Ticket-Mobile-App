@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Payment {
     @PrimaryKey(autoGenerate = true)
-    private int paymentId;
+    private Integer paymentId;
     private int uid;
     private String paymentMethod;
     private int ticketId;
