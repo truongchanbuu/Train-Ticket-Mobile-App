@@ -17,12 +17,14 @@ import com.example.trainticketproject.R;
 import com.example.trainticketproject.models.Seat;
 import com.example.trainticketproject.models.Status;
 import com.example.trainticketproject.models.Ticket;
+import com.example.trainticketproject.utils.ScheduleNotification;
 import com.example.trainticketproject.viewmodels.SeatViewModel;
 import com.example.trainticketproject.viewmodels.TicketViewModel;
 import com.example.trainticketproject.viewmodels.TrainViewModel;
 import com.example.trainticketproject.viewmodels.UserViewModel;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 public class SeatAdapter extends RecyclerView.Adapter<SeatViewHolder> {
@@ -64,21 +66,44 @@ public class SeatAdapter extends RecyclerView.Adapter<SeatViewHolder> {
                         .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 userViewModel.getUserById(uid).observe((LifecycleOwner) v.getContext(), user -> {
-                                    Log.d("user", user.getUid() + "_" + user.getName());
                                     trainViewModel.getTrainById(seat.getTrainId()).observe((LifecycleOwner) v.getContext(), train -> {
-                                        Log.d("train", train.getTrainId() + "_" + train.getTrip());
+                                        seat.setStatus(Status.UNAVAILABLE);
+                                        seat.setUid(uid);
+
                                         new Thread(() -> {
                                             try {
                                                 Long insertedUserId = ticketViewModel.insertUser(user);
                                                 Long insertedTrainId = ticketViewModel.insertTrain(train);
                                                 Long insertedSeatId = ticketViewModel.insertSeat(seat);
-                                                Ticket ticket = new Ticket(insertedUserId, insertedTrainId, insertedSeatId, LocalDateTime.now(), Status.AVAILABLE);
+
+                                                Ticket ticket = new Ticket(uid, train.getTrainId(), seat.getId(), LocalDateTime.now(), Status.AVAILABLE);
 
                                                 Long insertedTicketId = ticketViewModel.insertTicket(ticket);
-                                                Log.d("ticket_id", insertedTicketId + "");
                                                 seat.setTicketId(insertedTicketId);
+
+                                                seatViewModel.update(seat);
+
+                                                v.post(() -> {
+                                                    notifyDataSetChanged();
+
+
+                                                        // Schedule the reminder 3 days before
+    //                                                LocalDateTime departureTime = train.getDepartureTime();
+    //                                                LocalDateTime reminderTime = departureTime.minusDays(3);
+    //                                                long reminderTimeMillis = reminderTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    //                                                ScheduleNotification.scheduleNotification(v.getContext(), "Reminder", "Your departure is approaching", reminderTimeMillis);
+                                                    long reminderTimeMillis = System.currentTimeMillis() + 10 * 1000;
+                                                    ScheduleNotification.scheduleNotification(v.getContext(), "Reminder", "Your departure is approaching", reminderTimeMillis);
+
+
+                                                    Toast.makeText(v.getContext(), "SUCCESS TO BOOK TICKET! THERE WILL BE A REMINDER 3 DAYS BEFORE!", Toast.LENGTH_SHORT).show();
+                                                });
                                             } catch (Exception ex) {
                                                 ex.printStackTrace();
+                                                v.post(() -> {
+                                                    holder.tvSeatCode.setBackgroundColor(Color.CYAN);
+                                                    Toast.makeText(v.getContext(), "FAILED TO TAKE ADVANCE THE SEAT", Toast.LENGTH_SHORT).show();
+                                                });
                                             }
                                         }).start();
                                     });
@@ -86,18 +111,6 @@ public class SeatAdapter extends RecyclerView.Adapter<SeatViewHolder> {
                             } else {
                                 Toast.makeText(v.getContext(), "Failed to generate ticket", Toast.LENGTH_SHORT).show();
                             }
-
-                            seat.setStatus(Status.UNAVAILABLE);
-                            seat.setUid(uid);
-
-                            new Thread(() -> {
-                                try {
-                                    seatViewModel.update(seat);
-                                    v.post(() -> notifyDataSetChanged());
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                }
-                            }).start();
                         })
                         .setNegativeButton(android.R.string.no, (dialog, which) -> {
                             holder.tvSeatCode.setBackgroundColor(Color.CYAN);

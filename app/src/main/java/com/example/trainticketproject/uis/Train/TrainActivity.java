@@ -6,13 +6,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.trainticketproject.R;
 import com.example.trainticketproject.models.Gender;
 import com.example.trainticketproject.models.User;
+import com.example.trainticketproject.uis.Ticket.MyTicketActivity;
+import com.example.trainticketproject.uis.Voucher.VoucherActivity;
+import com.example.trainticketproject.utils.NotificationPublisher;
 import com.example.trainticketproject.viewmodels.TrainViewModel;
 import com.example.trainticketproject.viewmodels.UserViewModel;
 
@@ -20,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrainActivity extends AppCompatActivity {
+    Long uid;
     private TrainViewModel trainViewModel;
-    private UserViewModel userViewModel;
 
     private TrainAdapter adapter;
     RecyclerView recyclerViewTrain;
@@ -29,9 +34,9 @@ public class TrainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train);
+        NotificationPublisher.createNotificationChannel(this);
 
         trainViewModel = new ViewModelProvider(this).get(TrainViewModel.class);
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
         // ADD SAMPLE TRAINS
 //        new Thread(() -> {
@@ -44,7 +49,7 @@ public class TrainActivity extends AppCompatActivity {
 //            userViewModel.insertMultipleUser(users);
 //        }).start();
 
-        Long uid = 3L;
+        uid = 3L;
         recyclerViewTrain = findViewById(R.id.recyclerViewTrain);
 
         trainViewModel.getAllTrains().observe(this, trains -> {
@@ -64,8 +69,15 @@ public class TrainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_myTicket) {
+        if (item.getItemId() == R.id.menu_item_my_ticket) {
+            Intent myTicketIntent = new Intent(this, MyTicketActivity.class);
+            myTicketIntent.putExtra("uid", uid);
 
+            startActivity(myTicketIntent);
+        } else if (item.getItemId() == R.id.menu_item_all_voucher) {
+            Intent allVouchersIntent = new Intent(this, VoucherActivity.class);
+            allVouchersIntent.putExtra("uid", uid);
+            startActivity(allVouchersIntent);
         }
 
         return false;

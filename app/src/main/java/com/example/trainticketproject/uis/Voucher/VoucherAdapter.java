@@ -87,7 +87,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherViewHolder> {
 
                                     v.post(() -> {
                                         notifyDataSetChanged();
-                                        Toast.makeText(v.getContext(), "The voucher has been added to your account", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(v.getContext(), "The voucher has been added to your account! Your points remain " + user.getRewardPoint(), Toast.LENGTH_SHORT).show();
                                     });
                                 } catch (Exception ex) {
                                     Log.d("INSERT FAILED", ex.getMessage());

@@ -5,11 +5,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.trainticketproject.R;
+import com.example.trainticketproject.models.User;
 import com.example.trainticketproject.models.Voucher;
+import com.example.trainticketproject.uis.Train.TrainActivity;
 import com.example.trainticketproject.viewmodels.UserViewModel;
 import com.example.trainticketproject.viewmodels.UserVoucherViewModel;
 import com.example.trainticketproject.viewmodels.VoucherViewModel;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VoucherActivity extends AppCompatActivity {
+    Long uid;
     private UserViewModel userViewModel;
     private VoucherViewModel voucherViewModel;
     private UserVoucherViewModel userVoucherViewModel;
@@ -43,12 +47,13 @@ public class VoucherActivity extends AppCompatActivity {
 
 //        Add sample data
 //        new Thread(() -> {
-//            List<User> users = DetailTicketActivity.createSampleUser();
+//            List<User> users = TrainActivity.createSampleUser();
 //
 //            userViewModel.insertMultipleUser(users);
 //        }).start();
 
-        Long uid = 6L;
+        Intent allVoucherIntent = getIntent();
+        uid = allVoucherIntent.getLongExtra("uid", 1L);
 
         voucherViewModel.getAllVouchers().observe(this, vouchers -> {
             userViewModel.getUserById(uid).observe(this, user -> {

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.gridlayout.widget.GridLayout;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -51,7 +52,8 @@ public class DetailTicketActivity extends AppCompatActivity {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         trainViewModel = new ViewModelProvider(this).get(TrainViewModel.class);
 
-        Long ticketId = 1L;
+        Intent ticketIdIntent = getIntent();
+        Long ticketId = ticketIdIntent.getLongExtra("ticketId", 1L);
         ticketViewModel.getTicketById(ticketId).observe(this, selectedTicket -> {
             if (selectedTicket != null) {
                 updateUI(selectedTicket);

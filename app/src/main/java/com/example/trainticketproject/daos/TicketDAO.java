@@ -3,6 +3,7 @@ package com.example.trainticketproject.daos;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.trainticketproject.models.Seat;
@@ -23,16 +24,16 @@ public interface TicketDAO {
     @Query("SELECT * FROM Ticket WHERE uid = :uid")
     LiveData<List<Ticket>> getTicketsForUser(Long uid);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     Long insertTicket(Ticket ticket);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     Long insertUser(User user);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     Long insertSeat(Seat seat);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     Long insertTrain(Train train);
 
     @Insert

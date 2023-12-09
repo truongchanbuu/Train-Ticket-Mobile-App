@@ -23,9 +23,12 @@ import java.time.LocalDateTime;
                 @ForeignKey(entity = Train.class,
                         parentColumns = "trainId",
                         childColumns = "trainId",
+                        onDelete = ForeignKey.CASCADE),
+                @ForeignKey(entity = Train.class,
+                        parentColumns = "trainId",
+                        childColumns = "trainId",
                         onDelete = ForeignKey.CASCADE)
-        },
-        indices = {@Index("uid"), @Index("seatNumber"), @Index("trainId")})
+        })
 public class Ticket {
     @PrimaryKey(autoGenerate = true)
     private Long ticketId;

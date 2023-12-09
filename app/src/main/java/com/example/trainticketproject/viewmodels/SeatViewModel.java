@@ -37,4 +37,8 @@ public class SeatViewModel extends AndroidViewModel {
     public LiveData<Integer> getCountSeatsForTrain(Long trainId) {
         return seatRepository.getCountSeatsForTrain(trainId);
     }
+
+    public LiveData<Seat> getSeatById(Long seatId) {
+        return seatRepository.getSeatById(seatId);
+    }
 }

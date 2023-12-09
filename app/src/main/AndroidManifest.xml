@@ -20,13 +20,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TrainTicketProject"
+        android:theme="@style/Theme.AppCompat.DayNight"
         tools:targetApi="31">
         <activity
             android:name=".uis.Ticket.MyTicketActivity"
-            android:exported="false" />
-        <activity
-            android:name=".uis.TrainPaymentActivity"
             android:exported="false" />
         <activity
             android:name=".uis.Voucher.VoucherActivity"
@@ -46,6 +43,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver
+            android:name=".utils.NotificationPublisher" />
     </application>
 
 </manifest>

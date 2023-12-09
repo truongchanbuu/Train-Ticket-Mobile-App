@@ -20,4 +20,6 @@
     <string name="my_tickets">My Tickets:</string>
     <string name="purchase_date">Purchase Date:</string>
     <string name="seat">Seat:</string>
+    <string name="all_vouchers">All Vouchers</string>
+    <string name="my_vouchers">My Vouchers</string>
 </resources>

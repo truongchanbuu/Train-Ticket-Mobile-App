@@ -4,7 +4,9 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.trainticketproject.daos.SeatDAO;
 import com.example.trainticketproject.daos.TicketDAO;
+import com.example.trainticketproject.daos.TrainDAO;
 import com.example.trainticketproject.databases.TicketRoomDatabase;
 import com.example.trainticketproject.models.Seat;
 import com.example.trainticketproject.models.Ticket;
@@ -15,10 +17,14 @@ import java.util.List;
 
 public class TicketRepository {
     private final TicketDAO ticketDAO;
+    private final TrainDAO trainDAO;
+    private final SeatDAO seatDAO;
 
     public TicketRepository(Application application) {
         TicketRoomDatabase ticketDatabase = TicketRoomDatabase.getDatabase(application);
         ticketDAO = ticketDatabase.ticketDAO();
+        trainDAO = ticketDatabase.trainDAO();
+        seatDAO = ticketDatabase.seatDAO();
     }
 
     public LiveData<Integer> getAvailableTicketCountByTrainId(Long trainId) {
@@ -47,5 +53,13 @@ public class TicketRepository {
 
     public LiveData<List<Ticket>> getTicketsForUser(Long uid) {
         return ticketDAO.getTicketsForUser(uid);
+    }
+
+    public LiveData<Train> getTrainById(Long trainId) {
+        return trainDAO.getTrainById(trainId);
+    }
+
+    public LiveData<Seat> getSeatById(Long seatId) {
+        return seatDAO.getSeatById(seatId);
     }
 }

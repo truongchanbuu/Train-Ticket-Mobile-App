@@ -37,4 +37,8 @@ public class SeatRepository {
     public LiveData<Integer> getCountSeatsForTrain(Long trainId) {
         return seatDAO.getCountSeatsForTrain(trainId);
     }
+
+    public LiveData<Seat> getSeatById(Long seatId) {
+        return seatDAO.getSeatById(seatId);
+    }
 }

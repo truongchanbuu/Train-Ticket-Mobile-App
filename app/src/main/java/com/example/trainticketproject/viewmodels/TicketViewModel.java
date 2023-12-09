@@ -48,4 +48,12 @@ public class TicketViewModel extends AndroidViewModel {
     public LiveData<List<Ticket>> getTicketsForUser(Long uid) {
         return ticketRepository.getTicketsForUser(uid);
     }
+
+    public LiveData<Train> getTrainById(Long trainId) {
+        return ticketRepository.getTrainById(trainId);
+    }
+
+    public LiveData<Seat> getSeatById(Long seatId) {
+        return ticketRepository.getSeatById(seatId);
+    }
 }

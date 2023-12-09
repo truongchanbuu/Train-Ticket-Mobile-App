@@ -21,6 +21,9 @@ public interface SeatDAO {
     @Query("SELECT * FROM Seat WHERE seatCode = :seatCode and trainId = :trainId")
     LiveData<Seat> getSeatByCodeInTrain(Integer seatCode, Long trainId);
 
+    @Query("SELECT * FROM Seat WHERE id = :id")
+    LiveData<Seat> getSeatById(Long id);
+
     @Update
     void update(Seat seat);
 
